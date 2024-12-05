@@ -1,0 +1,27 @@
+.table-header {
+    @apply bg-gray-50;
+}
+.table-header-cell {
+    @apply text-left px-6 py-3 border-b;
+}
+.table-row {
+    @apply hover:bg-gray-100 transition;
+}
+.table-cell {
+    @apply px-6 py-4 border-b;
+}
+.actions {
+    @apply flex gap-4;
+}
+.btn{
+    @apply p-2 rounded shadow;
+}
+.btn-edit {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+.btn-delete {
+    @apply bg-red-600 text-white hover:bg-red-700;
+}
+.btn-run {
+    @apply bg-green-600 text-white hover:bg-green-700;
+}
