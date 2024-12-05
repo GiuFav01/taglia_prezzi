@@ -31,13 +31,12 @@ class TagController extends Controller
                     'tags' => $tags,
                     'flash' => ['error' => session('error')],
                 ]);
-            } else {
-                return Inertia::render('Product', [
-                    'tags' => $tags,
-                ]);
             }
+            return Inertia::render('Product', [
+                'tags' => $tags,
+            ]);
         } catch (\Exception $e) {
-            return Inertia::render('Tags', [
+            return Inertia::render('Product', [
                 'tags' => [],
                 'flash' => ['error' => 'Error fetching tags: ' . $e->getMessage()],
             ]);

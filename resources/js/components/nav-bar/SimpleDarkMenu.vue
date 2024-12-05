@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, PropType } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { isTemplateExpression } from 'typescript';
+import { Inertia } from '@inertiajs/inertia';
 
 interface MenuItem {
     label: string;
@@ -21,6 +21,10 @@ const activeIndex = ref<number | null>(null);
 
 const toggleSubMenu = (index: number) => {
     activeIndex.value = activeIndex.value === index ? null : index;
+};
+
+const handleLogout = () => {
+    Inertia.post('/logout');
 };
 </script>
 
@@ -67,6 +71,17 @@ const toggleSubMenu = (index: number) => {
                         </span>
                     </li>
                 </ul>
+            </li>
+
+            <!-- Pulsante Logout -->
+            <li class="menu-item mt-6">
+                <button
+                    @click="handleLogout"
+                    class="relative flex items-center px-5 py-3 w-full text-left cursor-pointer bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-300"
+                >
+                    <FontAwesomeIcon icon="fas fa-sign-out-alt" class="text-lg mr-4" />
+                    Logout
+                </button>
             </li>
         </ul>
     </nav>

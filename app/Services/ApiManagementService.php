@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Api;
+use App\Models\AsinsList;
 use App\Utils\ResponseHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -35,12 +36,60 @@ class ApiManagementService
                 return ResponseHandler::error('Nessun ASIN trovato nella risposta dell\'API', null, 400);
             }
 
+            return $this->insertAsinList($asinList, $api);
+
             // return $this->getProdutcData($asinList, $api);
         } catch (\Exception $e) {
             return ResponseHandler::error('Errore interno durante l\'esecuzione dell\'API', null, 500);
         }
     }
 
+    /**
+    * Insert the ASIN list into the database.
+    *
+    * @param array $asinList
+    * @param Api $api
+    * @return ResponseHandler
+    */
+    private function insertAsinList($asinList, $api)
+    {
+        try {
+            $deletedCount = AsinsList::where('id_api', $api->id)->delete();
+
+            if ($deletedCount === 0) {
+                return ResponseHandler::error('Nessun dato da eliminare o errore nella cancellazione.', null, 400);
+            }
+
+            $errors = [];
+            $successCount = 0;
+
+            foreach ($asinList as $asin) {
+                $result = AsinsList::createAsin($asin, $api->id);
+
+                if (!$result['success']) {
+                    $errors[] = $result['message'];
+                } else {
+                    $successCount++;
+                }
+            }
+
+            if (!empty($errors)) {
+                return ResponseHandler::error(
+                    'Alcuni ASIN non sono stati inseriti correttamente.',
+                    ['success_count' => $successCount, 'errors' => $errors],
+                    500
+                );
+            }
+
+            return ResponseHandler::success('ASIN inseriti con successo', ['success_count' => $successCount], true);
+        } catch (\Exception $e) {
+            return ResponseHandler::error(
+                'Errore durante l\'inserimento degli ASIN',
+                $e->getMessage(),
+                500
+            );
+        }
+    }
 
     /**
      * Get product data for the given ASIN list.

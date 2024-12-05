@@ -4,19 +4,17 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
-
+use Inertia\Response;
 class ProductController extends Controller
 {
     /**
      * List all products.
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function index(): JsonResponse
+    public function index(): Response
     {
         try {
             $products = Product::with('api')->get();
@@ -32,13 +30,14 @@ class ProductController extends Controller
                     'flash' =>  ['error' => session('error')],
                 ]);
             }
-            else{
-                return Inertia::render('Product', [
-                    'products' => $products,
-                ]);
-            }
+            return Inertia::render('Product', [
+                'products' => $products,
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Unable to fetch products: '. $e->getMessage()], 500);
+            return Inertia::render('Product', [
+                'tags' => [],
+                'flash' => ['error' => 'Error fetching Product: ' . $e->getMessage()],
+            ]);
         }
     }
 
