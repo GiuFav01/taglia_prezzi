@@ -29,6 +29,7 @@ class ApiManagementService
             }
 
             $api->update(['last_execution' => now()]);
+
             $asinList = $response['data']['asinList'] ?? [];
             if (empty($asinList)) {
                 return ResponseHandler::error('Nessun ASIN trovato nella risposta dell\'API', null, 400);
