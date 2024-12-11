@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a08617497150dbf7c3bdb73ae1812761",
+    "content-hash": "7798a1712e504c27807182b19f207961",
     "packages": [
         {
             "name": "brick/math",
@@ -4163,6 +4163,80 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
+            "name": "shopify/shopify-api",
+            "version": "v5.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Shopify/shopify-api-php.git",
+                "reference": "04dff050e8769b110881be20f8f799d8ece7d7d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Shopify/shopify-api-php/zipball/04dff050e8769b110881be20f8f799d8ece7d7d4",
+                "reference": "04dff050e8769b110881be20f8f799d8ece7d7d4",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/inflector": "^2.0",
+                "ext-ctype": "*",
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "firebase/php-jwt": "^5.2 || ^6.2",
+                "guzzlehttp/guzzle": "^7.0",
+                "guzzlehttp/psr7": "^2.0",
+                "php": "^8.1",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0 || ^2.0",
+                "psr/log": "^1.1 || ^2.0 || ^3.0",
+                "ramsey/uuid": "^4.1"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.30",
+                "ext-apcu": "*",
+                "maglnet/composer-require-checker": "^3.0 || ^4.0",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^9",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "suggest": {
+                "ext-apcu": "Log fewer API deprecation warnings"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Shopify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shopify Inc.",
+                    "email": "dev-tools-education@shopify.com"
+                }
+            ],
+            "description": "Shopify API Library for PHP",
+            "keywords": [
+                "Storefront API",
+                "admin api",
+                "app",
+                "graphql",
+                "jwt",
+                "node",
+                "rest",
+                "shopify",
+                "webhook"
+            ],
+            "support": {
+                "issues": "https://github.com/Shopify/shopify-api-php/issues",
+                "source": "https://github.com/Shopify/shopify-api-php/tree/v5.8.1"
+            },
+            "time": "2024-11-13T19:30:20+00:00"
+        },
+        {
             "name": "symfony/clock",
             "version": "v7.1.6",
             "source": {
@@ -6523,6 +6597,67 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.2.7"
             },
             "time": "2023-12-08T13:03:43+00:00"
+        },
+        {
+            "name": "traydigita/paapi5-php-sdk",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TrayDigita/paapi5-php-sdk.git",
+                "reference": "29bc3d2dcce0f3a361d8d6c1e7c4dfe41b88035c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TrayDigita/paapi5-php-sdk/zipball/29bc3d2dcce0f3a361d8d6c1e7c4dfe41b88035c",
+                "reference": "29bc3d2dcce0f3a361d8d6c1e7c4dfe41b88035c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "^6.2||^7",
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Amazon\\ProductAdvertisingAPI\\v1\\": "src/"
+                },
+                "psr-4": {
+                    "Amazon\\ProductAdvertisingAPI\\v1\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Product Advertising API Team",
+                    "homepage": "https://webservices.amazon.com/paapi5/documentation/index.html"
+                }
+            ],
+            "description": "(Official -> amzn/paapi5-php-sdk) ProductAdvertisingAPI 5.0 PHP SDK",
+            "homepage": "https://webservices.amazon.com/paapi5/documentation/index.html",
+            "keywords": [
+                "ProductAdvertisingAPI",
+                "amazon",
+                "getbrowsenodes",
+                "getitems",
+                "getvariations",
+                "pa-api",
+                "paapi",
+                "paapi5",
+                "paapi5-php-sdk",
+                "paapi5.0",
+                "searchitems"
+            ],
+            "support": {
+                "issues": "https://github.com/TrayDigita/paapi5-php-sdk/issues",
+                "source": "https://github.com/TrayDigita/paapi5-php-sdk/tree/1.1.0"
+            },
+            "time": "2022-10-31T15:59:47+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

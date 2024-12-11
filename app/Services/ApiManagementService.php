@@ -99,7 +99,7 @@ class ApiManagementService
      *
      * @return ResponseHandler
      */
-    private function getProdutcData($asinList, $api){
+    public function getProdutcData($asinList, $api){
         $productResponse = $this->fetchProductDetails($asinList);
         if (!$productResponse['success']) {
             return ResponseHandler::error('Errore durante il recupero dei dettagli del prodotto', null, 500);
@@ -115,7 +115,7 @@ class ApiManagementService
      * @param string $url
      * @return array
      */
-    private function sendGetRequest(string $url): array
+    protected function sendGetRequest(string $url): array
     {
         try {
             $response = Http::timeout(30)->get($url);

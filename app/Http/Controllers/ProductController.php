@@ -18,24 +18,16 @@ class ProductController extends Controller
     {
         try {
             $products = Product::with('api')->get();
-            if(session('success')) {
-                return Inertia::render('Product', [
-                    'products' => $products,
-                    'flash' => ['success' => session('success')],
-                ]);
-            }
-            elseif(session('error')) {
-                return Inertia::render('Product', [
-                    'products' => $products,
-                    'flash' =>  ['error' => session('error')],
-                ]);
-            }
-            return Inertia::render('Product', [
-                'products' => $products,
+            return Inertia::render('Products', [
+                'product' => $products,
+                'flash' => [
+                    'success' => session('success') ? session('success') : null,
+                    'error' => session('error') ? session('error') : null
+                ],
             ]);
         } catch (\Exception $e) {
             return Inertia::render('Product', [
-                'tags' => [],
+                'product' => [],
                 'flash' => ['error' => 'Error fetching Product: ' . $e->getMessage()],
             ]);
         }

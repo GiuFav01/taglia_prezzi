@@ -21,22 +21,15 @@ class TagController extends Controller
     {
         try {
             $tags = Tag::all();
-            if (session('success')) {
-                return Inertia::render('Product', [
-                    'tags' => $tags,
-                    'flash' => ['success' => session('success')],
-                ]);
-            } elseif (session('error')) {
-                return Inertia::render('Product', [
-                    'tags' => $tags,
-                    'flash' => ['error' => session('error')],
-                ]);
-            }
-            return Inertia::render('Product', [
+            return Inertia::render('Tags', [
                 'tags' => $tags,
+                'flash' => [
+                    'success' => session('success') ? session('success') : null,
+                    'error' => session('error') ? session('error') : null
+                ],
             ]);
         } catch (\Exception $e) {
-            return Inertia::render('Product', [
+            return Inertia::render('Tags', [
                 'tags' => [],
                 'flash' => ['error' => 'Error fetching tags: ' . $e->getMessage()],
             ]);

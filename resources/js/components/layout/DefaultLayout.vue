@@ -31,5 +31,10 @@ const menuItems = [
         icon: ['fas', 'fa-th'],
         link: '/tags',
     },
+    {
+        label: 'Lista Asin',
+        icon: ['fas', 'list'],
+        link: '/asins',
+    }
 ];
 </script>

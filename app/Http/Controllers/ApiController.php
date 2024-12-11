@@ -14,7 +14,7 @@ use App\Services\ApiManagementService;
 class ApiController extends Controller
 {
     /**
-     * Display a listing of APIs.
+     * Display a listing of APIs
      *
      * @return Response
      */
@@ -22,21 +22,13 @@ class ApiController extends Controller
     {
         try {
             $apis = Api::with('tags')->get();
-            if (session('success')) {
-                return Inertia::render('Apis', [
-                    'apis' => $apis,
-                    'flash' => ['success' => session('success')],
-                ]);
-            } elseif (session('error')) {
-                return Inertia::render('Apis', [
-                    'apis' => $apis,
-                    'flash' => ['error' => session('error')],
-                ]);
-            } else {
-                return Inertia::render('Apis', [
-                    'apis' => $apis,
-                ]);
-            }
+            return Inertia::render('Apis', [
+                'apis' => $apis,
+                'flash' => [
+                    'success' => session('success') ? session('success') : null,
+                    'error' => session('error') ? session('error') : null
+                ],
+            ]);
 
         } catch (\Exception $e) {
             return Inertia::render('Apis', [
