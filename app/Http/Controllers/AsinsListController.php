@@ -91,6 +91,13 @@ class AsinsListController extends Controller
             'eu-west-1'
         );
 
+        $asinRecord = AsinsList::where('asin', $asin)->with('api.tags')->first();
+
+        if ($asinRecord) {
+            $api = $asinRecord->api; // Ottieni l'API associata
+            $tagsApi = $api ? $api->tags : []; // Ottieni i tag associati all'API
+        }
+
         $shopifyService = new ShopifyService();
 
         try {
@@ -106,10 +113,17 @@ class AsinsListController extends Controller
                 $tags = $productData['Tags'] ?? [];
                 $images = $productData['Images'] ?? [];
                 $price = $productData['Price'] ?? null;
+                $savingBasis = $productData['SavingBasis'] ?? null;
+                $brand = $productData['Brand'] ?? null;
+                foreach ($tagsApi as $tagApi) {
+                    $tags[] = $tagApi['name'];
+                }
 
                 $shopifyResponse = $shopifyService->createOrUpdateProduct(
                     $title,
                     (float) $price,
+                    (float) $savingBasis,
+                    $brand,
                     $images,
                     $description,
                     $tags,

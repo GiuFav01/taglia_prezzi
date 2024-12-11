@@ -116,6 +116,8 @@ class ShopifyService extends DataShopifyFormatService
      * @param array<string,string> $images
      * @param string|null $description
      * @param float $price
+     * @param float $savingBasis
+     * @param string $brand
      * @param array $tags
      * @param array $metafields
      * @param array $media
@@ -124,6 +126,8 @@ class ShopifyService extends DataShopifyFormatService
     public function createOrUpdateProduct(
         string $title,
         float $price,
+        float $savingBasis,
+        string $brand,
         array $images,
         ?string $description = null,
         array $tags = [],
@@ -145,6 +149,7 @@ class ShopifyService extends DataShopifyFormatService
         $createProductResponse = $this->createProduct(
             $title,
             $images,
+            $brand,
             $metafields,
             $description,
             $tags
@@ -157,7 +162,8 @@ class ShopifyService extends DataShopifyFormatService
             $addVariantResponse = $this->addProductVariant(
                 $productId,
                 $variantsId,
-                $price
+                $price,
+                $savingBasis
             );
 
             return [
@@ -175,13 +181,16 @@ class ShopifyService extends DataShopifyFormatService
      *
      * @param string $title The title of the product.
      * @param array<string,string> $images Array of image URLs to associate with the product.
+     * @param string $brand The brand of the product.
      * @param array $metafields Array of metafields to add to the product.
      * @param array $media Array of media objects (e.g., images) to associate with the product.
+     *
      * @return array Shopify API response.
      */
     public function createProduct(
         string $title,
         array $images,
+        string $brand,
         array $metafields = [],
         ?string $description = null,
         array $tags = []
@@ -233,6 +242,8 @@ class ShopifyService extends DataShopifyFormatService
                 "descriptionHtml" => $description,
                 "metafields" => $metafields,
                 "tags" => implode(',', $tags),
+                "templateSuffix" => "prodotto-amazon",
+                "vendor" => $brand,
             ],
             "media" => $mediaImages
         ];
@@ -286,12 +297,12 @@ class ShopifyService extends DataShopifyFormatService
         $variants = [
             [
                 "id" => $variantsId,
-                "price" => number_format($price, 2, '.', ''), // Prezzo della variante
+                "price" => number_format($price, 2, '.', ''),
             ]
         ];
 
         if ($compareAtPrice !== null) {
-            $variants[0]["compareAtPrice"] = number_format($compareAtPrice, 2, '.', ''); // Prezzo di confronto
+            $variants[0]["compareAtPrice"] = number_format($compareAtPrice, 2, '.', '');
         }
 
         $variables = [

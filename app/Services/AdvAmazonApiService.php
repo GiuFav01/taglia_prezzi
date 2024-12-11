@@ -126,6 +126,7 @@ class AdvAmazonApiService
             GetItemsResource::BROWSE_NODE_INFOBROWSE_NODESANCESTOR,
             GetItemsResource::BROWSE_NODE_INFOWEBSITE_SALES_RANK,
             GetItemsResource::OFFERSLISTINGSPRICE,
+            GetItemsResource::OFFERSLISTINGSSAVING_BASIS,
             GetItemsResource::OFFERSLISTINGSAVAILABILITYMESSAGE,
             GetItemsResource::OFFERSLISTINGSIS_BUY_BOX_WINNER,
             GetItemsResource::OFFERSLISTINGSDELIVERY_INFOIS_PRIME_ELIGIBLE,
@@ -179,11 +180,12 @@ class AdvAmazonApiService
                     'Weight' => $itemDimensions?->getWeight()?->getDisplayValue(),
                 ],
                 'Price' => $offers?->getListings()[0]?->getPrice()?->getDisplayAmount(),
+                'SavingBasis' => $offers?->getListings()[0]?->getSavingBasis()?->getDisplayAmount(),
                 'CustomerReviews' => [
                     'Count' => $customerReviews?->getCount(),
                     'StarRating' => $customerReviews?->getStarRating(),
                 ],
-                'Tags' => $this->extractTags($item), // Metodo per estrarre i tag
+                'Tags' => $this->extractTags($item),
                 'DetailPageURL' => $item->getDetailPageURL(),
                 'Images' => $images,
             ];

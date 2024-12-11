@@ -102,9 +102,10 @@ class DataShopifyFormatService
     public function generateDescription(array $productData): string
     {
         $description = "";
-
+        $brand = $productData['Brand'] ?? 'Sconosciuto';
         if (!empty($productData['Features'])) {
-            $description .= "<h2>Caratteristiche principali:</h2><ul>";
+            $description .= "<p><b>Marca: $brand <b></p>";
+            $description .= "<p><b>Caratteristiche principali<b></p><ul>";
             foreach ($productData['Features'] as $feature) {
                 $description .= "<li>" . htmlspecialchars($feature) . "</li>";
             }
