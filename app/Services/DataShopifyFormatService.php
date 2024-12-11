@@ -92,26 +92,6 @@ class DataShopifyFormatService
         return $metafields;
     }
 
-    /**
-     * Format Amazon product data as Shopify media.
-     *
-     * @param array $productData Product data from Amazon API.
-     * @return array Media formatted for Shopify.
-     */
-    public function formatMediaForShopify(array $productData): array
-    {
-        $media = [];
-
-        if (!empty($productData['Images']['Primary']['Large'])) {
-            $media[] = [
-                "alt" => $productData['Title'] ?? 'Immagine del prodotto',
-                "src" => $productData['Images']['Primary']['Large'],
-                "type" => "IMAGE",
-            ];
-        }
-
-        return $media;
-    }
 
     /**
      * Generate a description for the product based on Amazon data.

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use App\Utils\ResponseHandler;
+use Illuminate\Support\Facades\Log;
 use Amazon\ProductAdvertisingAPI\v1\ApiException;
 use Amazon\ProductAdvertisingAPI\v1\Configuration;
 use Amazon\ProductAdvertisingAPI\v1\com\amazon\paapi5\v1\PartnerType;
@@ -146,6 +147,7 @@ class AdvAmazonApiService
     private function parseResponse(array $items): array
     {
         $responseList = [];
+
         foreach ($items as $item) {
             // Variabili temporanee per evitare ripetizioni
             $itemInfo = $item->getItemInfo();
@@ -154,6 +156,14 @@ class AdvAmazonApiService
             $itemDimensions = $productInfo?->getItemDimensions();
             $offers = $item->getOffers();
             $customerReviews = $item->getCustomerReviews();
+            $images = [];
+
+            $images[] = $item->getImages()?->getPrimary()?->getLarge()?->getURL();
+            $variants = $item->getImages()?->getVariants() ?? [];
+            foreach ($variants  as $variant) {
+                $images[] = $variant->getLarge()->getURL();
+            }
+
 
             $responseList[] = [
                 'ASIN' => $item->getASIN(),
@@ -175,12 +185,7 @@ class AdvAmazonApiService
                 ],
                 'Tags' => $this->extractTags($item), // Metodo per estrarre i tag
                 'DetailPageURL' => $item->getDetailPageURL(),
-                'Images' => [
-                    'Small' => $item->getImages()?->getPrimary()?->getSmall()?->getURL(),
-                    'Medium' => $item->getImages()?->getPrimary()?->getMedium()?->getURL(),
-                    'Large' => $item->getImages()?->getPrimary()?->getLarge()?->getURL(),
-                ],
-
+                'Images' => $images,
             ];
         }
         return $responseList;

@@ -105,10 +105,11 @@ class AsinsListController extends Controller
                 $metafields = $shopifyService->formatMetafieldsForShopify($productData);
                 $tags = $productData['Tags'] ?? [];
                 $images = $productData['Images'] ?? [];
+                $price = $productData['Price'] ?? null;
 
-                // Crea o aggiorna il prodotto su Shopify
                 $shopifyResponse = $shopifyService->createOrUpdateProduct(
                     $title,
+                    (float) $price,
                     $images,
                     $description,
                     $tags,

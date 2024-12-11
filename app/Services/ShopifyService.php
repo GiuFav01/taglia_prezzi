@@ -115,7 +115,7 @@ class ShopifyService extends DataShopifyFormatService
      * @param string $title
      * @param array<string,string> $images
      * @param string|null $description
-     * @param string|null $price
+     * @param float $price
      * @param array $tags
      * @param array $metafields
      * @param array $media
@@ -123,6 +123,7 @@ class ShopifyService extends DataShopifyFormatService
      */
     public function createOrUpdateProduct(
         string $title,
+        float $price,
         array $images,
         ?string $description = null,
         array $tags = [],
@@ -152,7 +153,12 @@ class ShopifyService extends DataShopifyFormatService
         if (isset($createProductResponse['data']['productCreate']['product']['id'])) {
             $productId = $createProductResponse['data']['productCreate']['product']['id'];
             $variantsId = $createProductResponse['data']['productCreate']['product']['variants']['nodes'][0]['id'];
-            $addVariantResponse = $this->addProductVariant($productId, $variantsId, 20);
+
+            $addVariantResponse = $this->addProductVariant(
+                $productId,
+                $variantsId,
+                $price
+            );
 
             return [
                 'product' => $createProductResponse,
@@ -213,11 +219,11 @@ class ShopifyService extends DataShopifyFormatService
         QUERY;
 
         $mediaImages = [];
-        foreach($images as $key => $value) {
+        foreach($images as $image) {
             $mediaImages[] = [
                 "mediaContentType" => "IMAGE",
-                "originalSource" => $value,
-                "alt" => "Product image ".$key
+                "originalSource" => $image,
+                "alt" => "Product image "
             ];
         }
 
