@@ -115,11 +115,13 @@ class AsinsListController extends Controller
                 $price = $productData['Price'] ?? null;
                 $savingBasis = $productData['SavingBasis'] ?? null;
                 $brand = $productData['Brand'] ?? null;
+                $asin = $productData['ASIN'];
                 foreach ($tagsApi as $tagApi) {
                     $tags[] = $tagApi['name'];
                 }
 
                 $shopifyResponse = $shopifyService->createOrUpdateProduct(
+                    $asin,
                     $title,
                     (float) $price,
                     (float) $savingBasis,

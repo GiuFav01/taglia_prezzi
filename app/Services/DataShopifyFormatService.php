@@ -70,15 +70,6 @@ class DataShopifyFormatService
             "value" => "spreadr-affiliate", // Valore richiesto dal codice Liquid
         ];
 
-        if (!empty($productData['Region'])) {
-            $metafields[] = [
-                "namespace" => "global",
-                "key" => "spreadr-region",
-                "type" => "single_line_text_field",
-                "value" => "it", // Esempio: "it" per Italia
-            ];
-        }
-
         if (!empty($productData['DetailPageURL'])) {
             $metafields[] = [
                 "namespace" => "global",

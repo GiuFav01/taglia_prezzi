@@ -112,6 +112,7 @@ class ShopifyService extends DataShopifyFormatService
     /**
      * Create or Update a product in Shopify.
      *
+     * @param string $asin
      * @param string $title
      * @param array<string,string> $images
      * @param string|null $description
@@ -124,6 +125,7 @@ class ShopifyService extends DataShopifyFormatService
      * @return array Shopify API response.
      */
     public function createOrUpdateProduct(
+        string $asin,
         string $title,
         float $price,
         float $savingBasis,
@@ -160,6 +162,7 @@ class ShopifyService extends DataShopifyFormatService
             $variantsId = $createProductResponse['data']['productCreate']['product']['variants']['nodes'][0]['id'];
 
             $addVariantResponse = $this->addProductVariant(
+                $asin,
                 $productId,
                 $variantsId,
                 $price,
@@ -179,6 +182,7 @@ class ShopifyService extends DataShopifyFormatService
     /**
      * Create a product in Shopify with metafields and media.
      *
+     * @param string $asin The ASIN of the product.
      * @param string $title The title of the product.
      * @param array<string,string> $images Array of image URLs to associate with the product.
      * @param string $brand The brand of the product.
@@ -261,7 +265,19 @@ class ShopifyService extends DataShopifyFormatService
         }
     }
 
+    /**
+    * Add a product variant to an existing product.
+    *
+    * @param string $asin The ASIN of the product.
+    * @param string $productId The ID of the product to add the variant to.
+    * @param string $variantsId The ID of the variant to add.
+    * @param float $price The price of the variant.
+    * @param float|null $compareAtPrice The compare at price of the variant.
+    *
+    * @return array Shopify API response.
+    */
     public function addProductVariant(
+        string $asin,
         string $productId,
         string $variantsId,
         float $price,
@@ -298,6 +314,9 @@ class ShopifyService extends DataShopifyFormatService
             [
                 "id" => $variantsId,
                 "price" => number_format($price, 2, '.', ''),
+                "inventoryItem" => [
+                    "sku" => $asin
+                ],
             ]
         ];
 
