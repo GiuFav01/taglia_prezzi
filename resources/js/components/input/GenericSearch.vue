@@ -1,3 +1,46 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import axios from "axios";
+
+const { onChange, linkApi, idElements } = defineProps<{
+    onChange: (tags: Tag[]) => void;
+    linkApi: string;
+    idElements: string;
+}>();
+
+const query = ref("");
+const suggestions = ref<Tag[]>([]);
+const selectedTags = ref<Tag[]>([]);
+
+const fetchSuggestions = async () => {
+    if (query.value.length > 1) {
+        try {
+            const response = await axios.get(linkApi, {
+                params: {
+                    search: query.value,
+                    id: idElements
+                },
+            });
+            suggestions.value = response.data || [];
+        } catch (error) {
+            console.error("Errore durante il caricamento dei suggerimenti:", error);
+            suggestions.value = [];
+        }
+    } else {
+        suggestions.value = [];
+    }
+};
+
+const selectTag = (tag: Tag) => {
+    if (!selectedTags.value.find((t) => t.id === tag.id)) {
+        selectedTags.value.push(tag);
+        onChange(selectedTags.value);
+    }
+    query.value = "";
+    suggestions.value = [];
+};
+</script>
+
 <template>
     <div>
         <input
@@ -18,60 +61,7 @@
                 {{ tag.name }}
             </li>
         </ul>
-        <div class="mt-2 flex flex-wrap gap-2">
-            <span
-                v-for="tag in selectedTags"
-                :key="tag.id"
-                class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
-            >
-                {{ tag.name }}
-                <button @click="removeTag(tag)" class="ml-2 text-red-500">x</button>
-            </span>
-        </div>
     </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-import axios from "axios";
 
-const props = defineProps<{
-    onChange: (tags: Tag[]) => void; // Funzione per restituire i tag selezionati al genitore
-    initialSuggestions?: Tag[]; // Suggerimenti iniziali opzionali
-}>();
-
-const query = ref("");
-const suggestions = ref<Tag[]>(props.initialSuggestions || []);
-const selectedTags = ref<Tag[]>([]);
-
-const fetchSuggestions = async () => {
-    if (query.value.length > 1) {
-        try {
-            const response = await axios.get("/tags/search", {
-                params: { search: query.value },
-            });
-            suggestions.value = response.data || [];
-        } catch (error) {
-            console.error("Errore durante il caricamento dei suggerimenti:", error);
-            suggestions.value = [];
-        }
-    } else {
-        suggestions.value = [];
-    }
-};
-
-
-const selectTag = (tag: Tag) => {
-    if (!selectedTags.value.find((t) => t.id === tag.id)) {
-        selectedTags.value.push(tag);
-        props.onChange(selectedTags.value);
-    }
-    query.value = ""; // Resetta il campo di input
-    suggestions.value = []; // Pulisci i suggerimenti
-};
-
-const removeTag = (tag: Tag) => {
-    selectedTags.value = selectedTags.value.filter((t) => t.id !== tag.id);
-    props.onChange(selectedTags.value);
-};
-</script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Api;
+use App\Models\ApiTag;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
@@ -103,7 +104,12 @@ class ApiController extends Controller
 
             if ($request->has('tags')) {
                 $tagIds = collect($request->tags)->pluck('id')->toArray();
-                $api->tags()->sync($tagIds);
+                foreach ($tagIds as $tagId) {
+                    ApiTag::create([
+                        'id_api' => $id,
+                        'id_tag' => $tagId,
+                    ]);
+                }
             }
 
             return redirect()->route('apis.index')->with('success', 'API successfully updated!');

@@ -56,10 +56,6 @@ class ApiManagementService
         try {
             $deletedCount = AsinsList::where('id_api', $api->id)->delete();
 
-            if ($deletedCount === 0) {
-                return ResponseHandler::error('Nessun dato da eliminare o errore nella cancellazione.', null, 400);
-            }
-
             $errors = [];
             $successCount = 0;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Api;
 use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -63,12 +64,25 @@ class TagController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     */
+    */
     public function search(Request $request): JsonResponse
     {
         try {
             $search = $request->query('search', '');
-            $tags = Tag::where('name', 'like', "%{$search}%")->get();
+            $apiId = $request->query('id', null);
+
+            $associatedTagIds = [];
+            if ($apiId) {
+                $api = Api::find($apiId);
+
+                if ($api) {
+                    $associatedTagIds = $api->tags->pluck('id')->toArray();
+                }
+            }
+
+            $tags = Tag::where('name', 'like', "%{$search}%")
+                ->whereNotIn('id', $associatedTagIds)
+                ->get();
 
             return response()->json($tags);
         } catch (\Exception $e) {

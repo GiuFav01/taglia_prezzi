@@ -14,7 +14,8 @@ class CreateApiTagTable extends Migration
             $table->foreign('id_api')->references('id')->on('apis')->onDelete('cascade');
             $table->foreign('id_tag')->references('id')->on('tags')->onDelete('cascade');
 
-            $table->primary(['id_api', 'id_tag']); // Composite primary key
+            $table->primary(['id_api', 'id_tag']);
+            $table->timestamps();
         });
     }
 

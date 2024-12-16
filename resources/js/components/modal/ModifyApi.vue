@@ -10,6 +10,7 @@ const props = defineProps<{
     api?: Api | null;
 }>();
 
+let actualTags:Tag[];
 const form = ref<Api>({
     url: "",
     description: "",
@@ -30,16 +31,19 @@ watch(
                   id: "",
                   lastExecution: ""
               };
+        actualTags = api ? api.tags : [];
     },
     { immediate: true }
 );
 
 const updateSelectedTags = (tags: Tag[]) => {
-    form.value.tags = tags.map((tag) => ({
+    let newTags = tags.map((tag) => ({
         id: tag.id,
         name: tag.name,
         description: tag.description || '',
     }));
+    form.value.tags = newTags;
+    actualTags.push(...newTags);
 };
 
 const removeTag = (tag: Tag) => {
@@ -90,16 +94,17 @@ const submitForm = () => {
                     <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Tag</label>
                     <div class="mb-4">
                         <GenericSearch
-                            :initial-suggestions="[]"
                             :on-change="updateSelectedTags"
+                            link-api="/tags/search"
+                            :id-elements="form.id"
                         />
                     </div>
-                    <!-- Mostra i tag esistenti se in modalità modifica -->
+
                     <div v-if="api && form.tags.length" class="mt-2">
                         <h3 class="text-sm font-medium text-gray-700">Tag associati:</h3>
-                        <ul class="mt-1">
+                        <ul class="mt-1 flex gap-2">
                             <li
-                                v-for="tag in form.tags"
+                                v-for="tag in actualTags"
                                 :key="tag.id"
                                 class="text-sm text-gray-800 flex items-center justify-between"
                             >
